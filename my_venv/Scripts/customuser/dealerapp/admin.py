@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Dealer
+from dealerapp.models import Dealer
 
 
 admin.site.register(Dealer)
