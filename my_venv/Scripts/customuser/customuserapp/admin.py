@@ -1,4 +1,7 @@
 from django.contrib import admin
-from customuserapp.models import NewUser
+from .models import NewUser
+
 
 admin.site.register(NewUser)
+
+

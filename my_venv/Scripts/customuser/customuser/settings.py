@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'customuserapp',
     'dealerapp',
+    
 ]
 
 MIDDLEWARE = [
@@ -118,7 +119,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = 'static/'
-AUTH_USER_MODEL='customuserapp.NewUser'
+AUTH_USER_MODEL='customuserapp.NewUser',
 AUTH_USER_MODEL='dealerapp.Dealer'
 
 

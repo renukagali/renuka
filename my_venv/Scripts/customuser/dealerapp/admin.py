@@ -1,4 +1,6 @@
 from django.contrib import admin
-from dealerapp.models import Dealer
+from .models import Dealer
+
 
 admin.site.register(Dealer)
+

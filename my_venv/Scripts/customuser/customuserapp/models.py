@@ -1,7 +1,6 @@
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
 
-
 class CustomAccountManager(BaseUserManager):
    
     def create_superuser(self, email, username, password):
@@ -10,20 +9,16 @@ class CustomAccountManager(BaseUserManager):
         user.is_staff = True
         user.is_superuser = True
         user.save(using=self._db)
-        return super
+        return user
     
-
-    def create_user(self, email, username, password):
+    def create_user(self, email, username, password=None):
         if not email:
             raise ValueError("You must provide an email address.")
-
         
-        user = self.model(email=email, username=username)
+        user = self.model(email=self.normalize_email(email), username=username)
         user.set_password(password)
-        user.save()
+        user.save(using=self._db)
         return user
-
-       
 
 class NewUser(AbstractUser):
     email = models.EmailField(unique=True)
@@ -31,5 +26,8 @@ class NewUser(AbstractUser):
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
+    
 
     objects = CustomAccountManager()
+
+
