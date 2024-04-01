@@ -8,14 +8,14 @@
 <body>
     <h1>Welcome</h1>
     <div>
-        <label>Log in if you already have registered!</label>
+        <label>Log Here!</label>
         <div class="form-group last mb-4">
-            <div><button class="btn btn-pill text-white btn-block btn-primary"><a href="{% url 'login_views' %}">login</a></button>
+            <div><button class="btn btn-pill text-white btn-block btn-primary"><a href="{% url 'login_view' %}">login</a></button>
             </div>
         </div>
-        <label>If not register here!</label>
+        <label>Register here!</label>
         <div class="form-group last mb-4">
-            <div><button class="btn btn-pill text-white btn-block btn-primary"><a href="{% url 'register'}">register</a></button></div>
+            <div><button class="btn btn-pill text-white btn-block btn-primary"><a href="{% url 'register' %}">register</a></button></div>
         </div>
     </div>
 </body>

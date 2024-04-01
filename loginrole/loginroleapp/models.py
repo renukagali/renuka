@@ -1,7 +1,10 @@
-from django.db import models
-from django.contrib.auth.models import AbstractUser
+# loginroleapp/models.py
 
-# Create your models here.
+from django.contrib.auth.models import AbstractUser
+from django.db import models
+
 class User(AbstractUser):
-    is_user=models.BooleanField('is user',default=False)
-    is_dealer=models.BooleanField('is dealer',default=False)
+    # Add fields as needed
+    is_users = models.BooleanField(default=False)
+    is_dealer = models.BooleanField(default=False)
+    is_admin = models.BooleanField(default=False)
