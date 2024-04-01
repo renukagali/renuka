@@ -17,7 +17,7 @@
             <div class="col-md-12">
               <div class="form-block">
                   <div class="mb-4">
-                      <h1>User Registration page</h1>
+                      <h1>User Registration</h1>
                 </div>
                   <span class="mb-0 text-muted">
                 {% if msg %}
@@ -26,7 +26,7 @@
                     Login page
                 {% endif %}
               </span>
-                <form  method="post">
+                <form  method="post" action="{% url 'register'%}">
                     {% csrf_token %}
                   <div class="form-group first">
                     <label for="username">Username</label>
