@@ -1,3 +1,9 @@
+
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 
-# Create your models here.
+class User(AbstractUser):
+    # Add fields as needed
+    is_users = models.BooleanField(default=False)
+    is_dealer = models.BooleanField(default=False)
+   
