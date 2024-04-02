@@ -2,7 +2,11 @@
 {% load static %}
 <html lang="en">
   <head>
+<<<<<<< HEAD
     <meta charset="utf-8">
+=======
+    <!-- Required meta tags -->    <meta charset="utf-8">
+>>>>>>> 2595d271463a375dee563e2e8052274e8c599d87
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     
     
@@ -20,7 +24,15 @@
                       <h1>User Registration</h1>
                 </div>
                   <span class="mb-0 text-muted">
+<<<<<<< HEAD
                 
+=======
+                {% if msg %}
+                    {{ msg | safe }}
+                {% else %}
+                    Login page
+                {% endif %}
+>>>>>>> 2595d271463a375dee563e2e8052274e8c599d87
               </span>
                 <form  method="post" action="{% url 'register'%}">
                     {% csrf_token %}
@@ -71,4 +83,13 @@
 
     
   </body>
+<<<<<<< HEAD
 </html>
+=======
+</html>
+
+
+
+
+
+>>>>>>> 2595d271463a375dee563e2e8052274e8c599d87
