@@ -5,8 +5,8 @@ from django.contrib import messages
 from .forms import RegistrationForm
 from .models import User
 from django.shortcuts import render, redirect
-# from .models import Product
-# from .forms import ProductForm
+from .models import Product
+from .forms import ProductForm
 
 
 def main_home(request):
@@ -53,23 +53,26 @@ def user_login(request):
 def user_home(request):
     return render(request, 'user_home.html')
 
+# def dealer_home(request):
+#     return render(request, 'dealer_home.html')
+
+
 def dealer_home(request):
-    return render(request, 'dealer_home.html')
-
-
-# def product_list(request):
-#     if request.method == 'POST':
-#         form = ProductForm(request.POST)
-#         if form.is_valid():
-#             Product = form.save(commit=False)
-#             Product.dealer = request.user
-#             Product.save
-#         return redirect(request,'product_list')
-#     else:
-#         form = ProductForm
-#         return redirect(request, 'create product.html',{'form':form})
+    if request.method == 'POST':
+        form = ProductForm(request.POST)
+        if form.is_valid():
+            product = form.save(commit=False)
+            product.dealer = request.user
+            product.save()
+            return redirect('product_list')
+    else:
+        form = ProductForm()
+    return render(request, 'product_home.html', {'form': form})
     
 
 
-# def wish_list(request):
+# def user_home(request):
+#     if request.method == 'POST':
+#         form = WishlistForm(request.POST)
+#         if form.is
 #     return render(request,'wishlist.html',{'wishlist': wish_list})
