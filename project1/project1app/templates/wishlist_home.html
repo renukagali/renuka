@@ -6,11 +6,21 @@
     <title>Create Wishlist</title>
 </head>
 <body>
-    <h1>Create Wishlist</h1>
-    <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Create</button>
-    </form>
+    <h1>Wishlist</h1>
+<ul>
+    {% for product in products %}
+        <li>{{ product.name }}</li>
+        <div class="col">
+            <div class="card" style="width: 20rem;">
+                <div class="card-body">
+                    <h5 class="card-title">{{ product.name }}</h5>
+                    <p class="card-text">{{ product.price }}</p>
+                    <button type="submit">Update</button>
+                    <button type="submit">Delete</button>
+                </div>
+            </div>
+    {% endfor %}
+</ul>
+    
 </body>
 </html>

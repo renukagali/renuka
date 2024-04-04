@@ -16,10 +16,10 @@ class Product(models.Model):
     dealer = models.ForeignKey(User, on_delete=models.CASCADE, null=True, default='')
 
 
-# class Wishlist(models.Model):
-#     products = models.ManyToManyField(Product, related_name='wishlists')
-#     price = models.DecimalField(max_digits=10, decimal_places=2)
+class Wishlist(models.Model):
+    products = models.ManyToManyField(Product, related_name='wishlists')
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    User = models.ForeignKey(User, on_delete=models.CASCADE, null=True, default='')
 
-
-#     def __str__(self):
-#         return self.price
+    def __str__(self):
+        return self.price

@@ -3,8 +3,8 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.shortcuts import render, redirect
-from .forms import RegistrationForm, ProductForm
-from .models import User, Product
+from .forms import RegistrationForm, ProductForm, WishlistForm
+from .models import User, Product, Wishlist
 
 
 def main_home(request):
@@ -34,7 +34,7 @@ def user_login(request):
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('add_product' if user.role == User.Role.DEALER else 'user_home')
+                return redirect('product_list' if user.role == User.Role.DEALER else 'user_home')
             else:
                 messages.error(request, 'Invalid username or password.')
     else:
@@ -50,7 +50,7 @@ def product_list(request):
     products = Product.objects.filter(dealer=request.user)
     return render(request, 'product_list.html', {'products': products})
 
-
+#to add product
 def add_product(request):
     if request.method == 'POST':
         form = ProductForm(request.POST)
@@ -86,16 +86,46 @@ def deleteProduct(request, id):
         return redirect('product_list')
     else:
         return render(request,'deleteproduct.html',{'obj':obj})
+    
 
 
-# def user_home(request):
-#     if request.method == 'POST':
-#         form = WishlistForm(request.POST)
-#         if form.is_valid():
-#             Wishlist = form.save(commit=False)
-#             Wishlist.user = request.user
-#             Wishlist.save()
-#             return redirect('Wish_list')
-#     else:
-#         form = WishlistForm()
-#     return render(request,'wishlist_home.html',{'form':form})
+#to add wishlist
+def addwishlist(request):
+    if request.method == 'POST':
+        form = WishlistForm(request.POST)
+        if form.is_valid():
+            product = form.save(commit=False)
+            product.dealer = request.user
+            product.save()
+            return redirect('wishlist')
+    else:
+        form = WishlistForm()
+        return render(request, 'addwishlist.html', {'form': form})
+    
+
+#to update wishlist
+def updatewistlist(request, id):
+    obj = Product.objects.get(pk=id)
+    form = WishlistForm(instance=obj)
+    if request.method =='POST':
+        form = WishlistForm(request.POST,instance=obj)
+        if form.is_valid():
+            form.save()
+            return redirect('wishlist')
+        
+    else:
+        return render(request,'updatewishlist.html',{'form':form})
+    
+
+#to delete a wishlist
+def deletewishlist(request, id):
+    obj = Product.objects.get(pk=id)
+    if request.method =='POST':
+        obj.delete()
+        return redirect('product_list')
+    else:
+        return render(request,'deletewishlist.html',{'obj':obj})
+
+
+
+
