@@ -3,10 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Home</title>
+    <title>Product List</title>
 </head>
 <body>
-    <h1>Welcome to the User Homepage</h1>
-    <!-- Add user-specific content here -->
+    <h1>Product List</h1>
+    <ul>
+        {% for product in products %}
+            <li>{{ product.name }}</li>
+            <div class="col">
+                <div class="card" style="width: 20rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ product.name }}</h5>
+                        <p class="card-text">{{ product.price }}</p>
+                        <p class="card-text">{{ product.description }}</p> 
+                        <!-- Form to add product to wishlist -->
+                        <form method="post" action="{% url 'addwishlist' product.id %}" style="display: inline; margin-top: 10px;">
+                            {% csrf_token %}
+                        </form>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        </ul>
+    
 </body>
 </html>

@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 from .forms import RegistrationForm, ProductForm, WishlistForm
 from .models import User, Product, Wishlist
+from django.shortcuts import get_object_or_404
 
 
 def main_home(request):
@@ -68,24 +69,25 @@ def add_product(request):
 def updateproduct(request, id):
     obj = Product.objects.get(pk=id)
     form = ProductForm(instance=obj)
-    if request.method =='POST':
-        form = ProductForm(request.POST,instance=obj)
+    if request.method == 'POST':
+        form = ProductForm(request.POST, instance=obj)
         if form.is_valid():
             form.save()
             return redirect('product_list')
-        
     else:
-        return render(request,'updateproduct.html',{'form':form})
+        return render(request, 'updateproduct.html', {'form': form})
+
     
 
 #to delete a product
-def deleteProduct(request, id):
-    obj = Product.objects.get(pk=id)
-    if request.method =='POST':
-        obj.delete()
+def deleteProduct(request, product_id):
+    product = get_object_or_404(Product, pk=product_id) 
+    if request.method == 'POST':
+        product.delete() 
         return redirect('product_list')
     else:
-        return render(request,'deleteproduct.html',{'obj':obj})
+        return render(request, 'deleteproduct.html', {'product': product})
+
     
 
 def wishlist(request):
@@ -107,7 +109,7 @@ def addwishlist(request):
             products = form.cleaned_data['products']
             wishlist.products.set(products)  # Set the Many-to-Many relationship
             
-            return redirect('wishlist_home')
+            return redirect('wishlist')
     else:
         form = WishlistForm()
     
@@ -115,8 +117,8 @@ def addwishlist(request):
     
 
 #to delete a wishlist
-def deletewishlist(request, id):
-    obj = Product.objects.get(pk=id, user=request.user)
+def deletewishlist(request, product_id):
+    obj = Product.objects.get(pk=product_id, user=request.user)
     if request.method =='POST':
         obj.delete()
         return redirect('wishlist')
