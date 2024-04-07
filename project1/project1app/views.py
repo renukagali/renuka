@@ -88,43 +88,40 @@ def deleteProduct(request, id):
         return render(request,'deleteproduct.html',{'obj':obj})
     
 
+def wishlist(request):
+    productwishlist = Wishlist.objects.filter(user=request.user)
+    return render(request, 'wishlist.html', {'productwishlist': productwishlist})
+
+
 
 #to add wishlist
 def addwishlist(request):
     if request.method == 'POST':
         form = WishlistForm(request.POST)
         if form.is_valid():
-            product = form.save(commit=False)
-            product.dealer = request.user
-            product.save()
-            return redirect('wishlist')
+            wishlist = form.save(commit=False)
+            wishlist.user = request.user
+            wishlist.save()  # Save the wishlist first
+            
+            # Add selected products to the wishlist
+            products = form.cleaned_data['products']
+            wishlist.products.set(products)  # Set the Many-to-Many relationship
+            
+            return redirect('wishlist_home')
     else:
         form = WishlistForm()
-        return render(request, 'addwishlist.html', {'form': form})
     
-
-#to update wishlist
-def updatewistlist(request, id):
-    obj = Product.objects.get(pk=id)
-    form = WishlistForm(instance=obj)
-    if request.method =='POST':
-        form = WishlistForm(request.POST,instance=obj)
-        if form.is_valid():
-            form.save()
-            return redirect('wishlist')
-        
-    else:
-        return render(request,'updatewishlist.html',{'form':form})
+    return render(request, 'addwishlist.html', {'form': form})
     
 
 #to delete a wishlist
 def deletewishlist(request, id):
-    obj = Product.objects.get(pk=id)
+    obj = Product.objects.get(pk=id, user=request.user)
     if request.method =='POST':
         obj.delete()
-        return redirect('product_list')
+        return redirect('wishlist')
     else:
-        return render(request,'deletewishlist.html',{'obj':obj})
+        return render(request,'wishlist.html',{'obj':obj})
 
 
 

@@ -17,9 +17,8 @@ class Product(models.Model):
 
 
 class Wishlist(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     products = models.ManyToManyField(Product, related_name='wishlists')
-    price = models.DecimalField(max_digits=10, decimal_places=2)
-    User = models.ForeignKey(User, on_delete=models.CASCADE, null=True, default='')
 
     def __str__(self):
-        return self.price
+        return f"Wishlist for {self.user.username}"

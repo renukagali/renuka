@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wishlist</title>
+</head>
+<body>
+    <h1>Wishlist</h1>
+    <ul>
+        {% for item in productwishlist %}
+            <li>{{ item.product.name }}</li>
+            <form method="post" action="{% url 'remove_from_wishlist' item.id %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Remove from Wishlist</button>
+            </form>
+        {% empty %}
+            <li>Your wishlist is empty</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
