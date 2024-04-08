@@ -13,10 +13,14 @@
             <div class="col">
                 <div class="card" style="width: 20rem;">
                     <div class="card-body">
-                        <h5 class="card-title">{{ product.name }}</h5>
-                        <p class="card-text">{{ product.price }}</p>
-                        <p class="card-text">{{ product.description }}</p>
-                        <a href="{% url 'updateproduct' product.id %}" class="btn btn-primary">Update</a>
+                        <h5 class="card-title">name: {{ product.name }}</h5>
+                        <p class="card-text">price: {{ product.price }}</p>
+                        <p class="card-text">description: {{ product.description }}</p>
+                        <form method="post" action="{% url 'updateproduct' product.id %}" style="display: inline; margin-top: 10px;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger">Update</button>
+                        </form>
+    
                         <form method="post" action="{% url 'deleteProduct' product.id %}" style="display: inline; margin-top: 10px;">
                             {% csrf_token %}
                             <button type="submit" class="btn btn-danger">Delete</button>
@@ -26,9 +30,11 @@
             </div>
         {% endfor %}
     </ul>
-    
-    <!-- Button for adding a new product -->
-    <a href="{% url 'add_product' %}" class="btn btn-success">Add New Product</a>
+
+    <form method="post" action="{% url 'add_product' %}" style="display: inline; margin-top: 10px;">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Add New Product</button>
+    </form>
     
 </body>
 </html>

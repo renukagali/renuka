@@ -11,9 +11,11 @@
         {% for item in wishlist_items %}
             <li>
                 <div class="wishlist_item">
-                    <h2>{{ item.product.name }}</h2>
-                <p>Price: ${{ item.product.price }}</p>
-                <p>Quantity: {{ item.product.quantity }}</p>
+                    <h4 class="card-title">name: {{item.product.name }}</h4>
+                        <p class="card-text">Price: {{item.product.price }}</p>
+                    <!-- <h2>name: {{ item.product.name }}</h2>
+                    <p>Price: {{ item.product.price }}</p>
+                    <p class="card-text">price: {{ product.price }}</p> -->
                 </div>
                 
                 <form method="post" action="{% url 'deletewishlist' item.id %}">

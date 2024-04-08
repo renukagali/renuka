@@ -92,8 +92,8 @@ def deleteProduct(request, product_id):
     
 
 def wishlist(request):
-    productwishlist = Wishlist.objects.filter(user=request.user)
-    return render(request, 'wishlist.html', {'productwishlist': productwishlist})
+    wishlist_items = Wishlist.objects.filter(user=request.user)
+    return render(request, 'wishlist.html', {'wishlist_items': wishlist_items})
 
 
 
@@ -106,12 +106,11 @@ def addwishlist(request, product_id):
         if form.is_valid():
             wishlist = form.save(commit=False)
             wishlist.user = request.user
-            wishlist.save()  # Save the wishlist first
+            wishlist.save()  
 
-            # Add selected product to the wishlist
-            wishlist.products.add(product)  # Add the selected product to the wishlist
+            wishlist.products.add(product)  
 
-            return redirect('wishlist')  # Redirect to the wishlist page
+            return redirect('wishlist')  
     else:
         form = WishlistForm()
 
