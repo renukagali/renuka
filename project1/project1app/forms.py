@@ -14,6 +14,7 @@ class ProductForm(forms.ModelForm):
         fields = ['name', 'description', 'price']
 
 class WishlistForm(forms.ModelForm):
+  
     class Meta:
         model = Wishlist
-        fields = ['products']
+        fields = []

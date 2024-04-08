@@ -20,7 +20,7 @@ def registration(request):
             user.role = User.Role.DEALER if form.cleaned_data['is_dealer'] else User.Role.USERS
             user.save()
             login(request, user)
-            return redirect('add_product' if user.role == User.Role.DEALER else 'user_home')
+            return redirect('product_list' if user.role == User.Role.DEALER else 'user_home')
     else:
         form = RegistrationForm()
     
@@ -44,7 +44,8 @@ def user_login(request):
 
 
 def user_home(request):
-    return render(request, 'user_home.html')
+    products = Product.objects.all()
+    return render(request, 'user_home.html',{'products':products})
 
 
 def product_list(request):
@@ -97,34 +98,34 @@ def wishlist(request):
 
 
 #to add wishlist
-def addwishlist(request):
+def addwishlist(request, product_id):
+    product = get_object_or_404(Product, pk=product_id)
+
     if request.method == 'POST':
         form = WishlistForm(request.POST)
         if form.is_valid():
             wishlist = form.save(commit=False)
             wishlist.user = request.user
             wishlist.save()  # Save the wishlist first
-            
-            # Add selected products to the wishlist
-            products = form.cleaned_data['products']
-            wishlist.products.set(products)  # Set the Many-to-Many relationship
-            
-            return redirect('wishlist')
+
+            # Add selected product to the wishlist
+            wishlist.products.add(product)  # Add the selected product to the wishlist
+
+            return redirect('wishlist')  # Redirect to the wishlist page
     else:
         form = WishlistForm()
-    
-    return render(request, 'addwishlist.html', {'form': form})
-    
+
+    return render(request, 'addwishlist.html', {'form': form, 'product': product})
 
 #to delete a wishlist
-def deletewishlist(request, product_id):
-    obj = Product.objects.get(pk=product_id, user=request.user)
-    if request.method =='POST':
-        obj.delete()
-        return redirect('wishlist')
-    else:
-        return render(request,'wishlist.html',{'obj':obj})
-
+def deletewishlist(request, wishlist_id):
+    wishlist = get_object_or_404(Wishlist, pk=wishlist_id)
+    
+    if request.method == 'POST':
+        wishlist.delete()
+        return redirect('wishlist') 
+    
+    return render(request, 'deletewishlist.html', {'wishlist': wishlist})
 
 
 

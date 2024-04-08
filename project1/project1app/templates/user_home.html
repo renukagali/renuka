@@ -15,16 +15,18 @@
                     <div class="card-body">
                         <h5 class="card-title">{{ product.name }}</h5>
                         <p class="card-text">{{ product.price }}</p>
-                        <p class="card-text">{{ product.description }}</p> 
-                        <!-- Form to add product to wishlist -->
-                        <form method="post" action="{% url 'addwishlist' product.id %}" style="display: inline; margin-top: 10px;">
+                        <p class="card-text">{{ product.description }}</p>
+                        
+                        <!-- Add Wishlist Button -->
+                        <form method="post" action="{% url 'addwishlist' product.id %}" style="display: inline;">
                             {% csrf_token %}
+                            <button type="submit" class="btn btn-info">Add to Wishlist</button>
                         </form>
+                      
                     </div>
                 </div>
             </div>
         {% endfor %}
-        </ul>
-    
+    </ul>
 </body>
 </html>

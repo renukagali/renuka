@@ -8,12 +8,19 @@
 <body>
     <h1>Wishlist</h1>
     <ul>
-        {% for item in productwishlist %}
-            <li>{{ item.product.name }}</li>
-            <form method="post" action="{% url 'remove_from_wishlist' item.id %}">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-danger">Remove from Wishlist</button>
-            </form>
+        {% for item in wishlist_items %}
+            <li>
+                <div class="wishlist_item">
+                    <h2>{{ item.product.name }}</h2>
+                <p>Price: ${{ item.product.price }}</p>
+                <p>Quantity: {{ item.product.quantity }}</p>
+                </div>
+                
+                <form method="post" action="{% url 'deletewishlist' item.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Delete from Wishlist</button>
+                </form>
+            </li>
         {% empty %}
             <li>Your wishlist is empty</li>
         {% endfor %}
