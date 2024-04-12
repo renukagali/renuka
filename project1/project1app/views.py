@@ -1,12 +1,13 @@
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from .forms import RegistrationForm, ProductForm, WishlistForm
 from .models import User, Product, Wishlist
 from django.shortcuts import get_object_or_404
-# from .forms import UserProfileForm, CustomPasswordChangeForm
+from .forms import UserProfileForm, CustomPasswordChangeForm
+from django.contrib.auth import update_session_auth_hash  
 
 
 def main_home(request):
@@ -48,32 +49,6 @@ def user_home(request):
     products = Product.objects.all()
     return render(request, 'user_home.html',{'products':products})
 
-
-# def changepassword(request):
-#     if request.method == 'POST':
-#         form = CustomPasswordChangeForm(user=request.user, data=request.POST)
-#         if form.is_valid():
-#             user = form.save()
-#             update_session_auth_hash(request, user)
-#             return redirect('home')
-#     else:
-#         form = CustomPasswordChangeForm(user=request.user)
-    
-#     return render(request, 'change_password.html', {'form': form})
-
-
-# def updateuserdetails(request):
-#     user = request.user
-#     if request.method == 'POST':
-#         form = UserProfileForm(request.POST, instance=user)
-#         if form.is_valid():
-#             form.save()
-#             messages.success(request, 'Your details were successfully updated!')
-#             return redirect('user_home')
-#     else:
-#         form = UserProfileForm(instance=user)
-    
-#     return render(request, 'updateuserdetails.html', {'form': form})
 
 
 def product_list(request):
@@ -156,6 +131,39 @@ def deletewishlist(request, wishlist_id):
         return redirect('wishlist') 
     
     return render(request, 'deletewishlist.html', {'wishlist': wishlist})
+
+
+def changepassword(request):
+    if request.method == 'POST':
+        form = CustomPasswordChangeForm(user=request.user, data=request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)
+            return redirect('home')
+    else:
+        form = CustomPasswordChangeForm(user=request.user)
+    
+    return render(request, 'changepassword.html', {'form': form})
+
+
+def updateuserdetails(request):
+    user = request.user
+    if request.method == 'POST':
+        form = UserProfileForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Your details were successfully updated!')
+            return redirect('user_home')
+    else:
+        form = UserProfileForm(instance=user)
+    
+    return render(request, 'updateuserdetails.html', {'form': form})
+
+
+#to log out
+def logout_view(request):
+    logout(request)
+    return redirect('main_home')
 
 
 

@@ -1,32 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product List</title>
-</head>
-<body>
+
+{% extends 'basic.html' %}
+
+{% block title %}
+    Product List - Shop
+{% endblock %}
+
+{% block content %}
     <h1>Product List</h1>
-    <ul>
+    <div class="row">
         {% for product in products %}
-            <li>{{ product.name }}</li>
-            <div class="col">
-                <div class="card" style="width: 20rem;">
+            <div class="col-md-4 mb-4">
+                <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">name: {{ product.name }}</h5>
-                        <p class="card-text">price: {{ product.price }}</p>
-                        <p class="card-text">discription: {{ product.description }}</p>
-                        
+                        <h5 class="card-title">{{ product.name }}</h5>
+                        <p class="card-text">Price: {{ product.price }}</p>
+                        <p class="card-text">Description: {{ product.description }}</p>
                         <!-- Add Wishlist Button -->
-                        <form method="post" action="{% url 'addwishlist' product.id %}" style="display: inline;">
+                        <form method="post" action="{% url 'addwishlist' product.id %}">
                             {% csrf_token %}
                             <button type="submit" class="btn btn-info">Add to Wishlist</button>
                         </form>
-                      
                     </div>
                 </div>
             </div>
         {% endfor %}
-    </ul>
-</body>
-</html>
+    </div>
+{% endblock %}
