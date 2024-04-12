@@ -1,0 +1,127 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{% block title %}Shop{% endblock %}</title>
+    
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+          crossorigin="anonymous">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="icon" type="image/x-icon" href="{% static 'images/img1.jpg' %}">
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+        <!-- Shop Logo -->
+        <a class="navbar-brand" href="#">
+            <img src="{% static 'images/logo.jpg' %}" alt="Shop Logo" style="width: 50px; height: 50px;">
+        </a>
+        {% if user.is_authenticated %}
+            <span class="navbar-text ml-2">{{ user.username }}</span>
+        {% else %}
+            <span class="navbar-text ml-2">mmShop</span>
+        {% endif %}
+        
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ml-auto">
+                {% if user.is_authenticated %}
+                    {% if user.role == 'DEALER' %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'product_list' %}">Dealer Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'update_user_details' %}">Dealer Profile</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Home
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="nav-link" href="{% url 'user_home' %}">User Home</a>
+                                <a class="nav-link" href="{% url 'product_list' %}">Dealer Home</a>
+                            </div>
+                        </li>
+                    {% endif %}
+                      
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <div class="user-profile-icon">
+                                {{ user.username|first|upper }} <!-- Display first letter of username -->
+                            </div>
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{% url 'update_user_details' %}">Update Details</a>
+                            <a class="dropdown-item" href="{% url 'change_password' %}">Change Password</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+                        </div>
+                    </li> 
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'registration' %}">Register</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'user_login' %}">Login</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-4">
+    {% block content %}
+        <!-- Custom content based on user authentication -->
+        {% if user.is_authenticated %}
+            <h1>Welcome, {{ user.username }}!</h1>
+            <p>Explore our products and services.</p>
+            <div class="row">
+                <div class="col">
+                    <button class="btn btn-primary btn-block">View Products</button>
+                </div>
+                <div class="col">
+                    <button class="btn btn-secondary btn-block">Special Offers</button>
+                </div>
+            </div>
+        {% else %}
+            <h1>Welcome to venky Shop</h1>
+            <p>Please register or login to explore our products and services.</p>
+            <div class="row">
+                <div class="col">
+                    <a href="{% url 'registration' %}" class="btn btn-primary btn-block">Register</a>
+                </div>
+                <div class="col">
+                    <a href="{% url 'user_login' %}" class="btn btn-secondary btn-block">Login</a>
+                </div>
+            </div>
+        {% endif %}
+    {% endblock %}
+</div>
+
+<!-- Bootstrap JS and Dependencies -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+</body>
+</html>

@@ -6,6 +6,7 @@ from django.shortcuts import render, redirect
 from .forms import RegistrationForm, ProductForm, WishlistForm
 from .models import User, Product, Wishlist
 from django.shortcuts import get_object_or_404
+# from .forms import UserProfileForm, CustomPasswordChangeForm
 
 
 def main_home(request):
@@ -48,6 +49,33 @@ def user_home(request):
     return render(request, 'user_home.html',{'products':products})
 
 
+# def changepassword(request):
+#     if request.method == 'POST':
+#         form = CustomPasswordChangeForm(user=request.user, data=request.POST)
+#         if form.is_valid():
+#             user = form.save()
+#             update_session_auth_hash(request, user)
+#             return redirect('home')
+#     else:
+#         form = CustomPasswordChangeForm(user=request.user)
+    
+#     return render(request, 'change_password.html', {'form': form})
+
+
+# def updateuserdetails(request):
+#     user = request.user
+#     if request.method == 'POST':
+#         form = UserProfileForm(request.POST, instance=user)
+#         if form.is_valid():
+#             form.save()
+#             messages.success(request, 'Your details were successfully updated!')
+#             return redirect('user_home')
+#     else:
+#         form = UserProfileForm(instance=user)
+    
+#     return render(request, 'updateuserdetails.html', {'form': form})
+
+
 def product_list(request):
     products = Product.objects.filter(dealer=request.user)
     return render(request, 'product_list.html', {'products': products})
@@ -67,16 +95,18 @@ def add_product(request):
 
   
 #to update a product
-def updateproduct(request, id):
-    obj = Product.objects.get(pk=id)
-    form = ProductForm(instance=obj)
+def updateproduct(request, product_id):
+    obj = get_object_or_404(Product, pk=product_id)
+    
     if request.method == 'POST':
         form = ProductForm(request.POST, instance=obj)
         if form.is_valid():
             form.save()
             return redirect('product_list')
     else:
-        return render(request, 'updateproduct.html', {'form': form})
+        form = ProductForm(instance=obj)
+    
+    return render(request, 'updateproduct.html', {'form': form})
 
     
 
@@ -93,6 +123,7 @@ def deleteProduct(request, product_id):
 
 def wishlist(request):
     wishlist_items = Wishlist.objects.filter(user=request.user)
+    # print(wishlist_items)
     return render(request, 'wishlist.html', {'wishlist_items': wishlist_items})
 
 
