@@ -3,7 +3,7 @@ body {
     font-family: Arial, sans-serif;
     padding: 20px;
     color: black;
-    background-color: pink;
+    background-color: cornflowerblue;
     text-align: center;
     margin: 0;
     min-height: 100vh;
@@ -70,7 +70,7 @@ input[type="button"]:hover,
     line-height: 30px;
     text-align: center;
     border-radius: 50%;
-    background-color: pink;
+    background-color: cornflowerblue;
     color: black;
     font-weight: bold;
     text-transform: uppercase;

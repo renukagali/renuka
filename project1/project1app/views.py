@@ -178,7 +178,7 @@ def logout_view(request):
 
 def categorylist(request):
     categories = Category.objects.all()
-    return render(request, 'categorylist.html',{' categories': categories})
+    return render(request, 'categorylist.html',{'categories': categories})
 
 #to add category
 def addcategory(request):
@@ -214,6 +214,6 @@ def deletecategory(request, category_id):
     
 def categorydetails(request, category_id):
    obj = get_object_or_404(Category, pk=category_id)
-   products = Product.objects.filter(obj=obj)
+   items = Category.objects.all()
 
    return render (request,'categorydetails.html')

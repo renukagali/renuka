@@ -16,7 +16,8 @@
                     <div class="list-group-item">
                         <div class="row align-items-center">
                             <div class="col-md-8"> <!-- Use col-md-8 for category name to take up 8 grid columns -->
-                                <a href="{% url 'categorydetail' category.id %}" class="font-weight-bold">{{ category.name }}</a>
+                              
+                                {{ category.name }}
                             </div>
                             <div class="col-md-4 d-flex justify-content-end"> <!-- Use col-md-4 for buttons to take up 4 grid columns and align to the right -->
                                 <!-- Update Button -->
