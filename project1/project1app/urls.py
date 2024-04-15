@@ -16,6 +16,10 @@ urlpatterns = [
     path('updateuserdetails/', views.updateuserdetails, name='updateuserdetails'),
     path('changepassword/', views.changepassword, name='changepassword'),
     path('logout_view/', views.logout_view, name='logout_view'),
+   path('categorylist/', views.categorylist, name='categorylist'),
+    path('addcategory/', views.addcategory, name='addcategory'),
+    path('updatecategory/<int:category_id>/', views.updatecategory, name='updatecategory'),
+    path('deletecategory/<int:category_id>/', views.deletecategory, name='deletecategory'),
 
     
 ]

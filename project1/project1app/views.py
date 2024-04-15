@@ -36,15 +36,19 @@ def user_login(request):
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
             user = authenticate(request, username=username, password=password)
-            if user is not None:
+            if user is not None and user.is_active:
                 login(request, user)
-                return redirect('product_list' if user.role == User.Role.DEALER else 'user_home')
+                if user.role == User.Role.DEALER:
+                    return redirect('product_list')
+                elif user.dealer_details == 'Category Management User':
+                    return redirect('categorylist')
+                else:
+                    return redirect('user_home')
             else:
                 messages.error(request, 'Invalid username or password.')
     else:
         form = AuthenticationForm()
     return render(request, 'login.html', {'form': form})
-
 
 def user_home(request):
     products = Product.objects.all()
@@ -173,8 +177,8 @@ def logout_view(request):
 
 
 def categorylist(request):
-    category = Category.objects.all()
-    return render(request, 'categorylist.html',{'category':category})
+    categories = Category.objects.all()
+    return render(request, 'categorylist.html',{' categories': categories})
 
 #to add category
 def addcategory(request):
@@ -207,3 +211,9 @@ def deletecategory(request, category_id):
         return redirect('categorylist')
     else:
         return render(request, 'deletecategory.html',{'category':category})
+    
+def categorydetails(request, category_id):
+   obj = get_object_or_404(Category, pk=category_id)
+   products = Product.objects.filter(obj=obj)
+
+   return render (request,'categorydetails.html')

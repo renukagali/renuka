@@ -3,6 +3,8 @@ from django.contrib.auth.models import AbstractUser
 from django.utils import timezone
 
 class User(AbstractUser):
+
+    dealer_details = models.CharField(max_length=100, blank=True, null=True)
     class Role(models.TextChoices):
         USERS = 'USERS', 'User'
         DEALER = 'DEALER', 'Dealer'

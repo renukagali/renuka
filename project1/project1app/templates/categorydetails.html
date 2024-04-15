@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Category Details</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Category Details</h1>
+        <h2>{{ category.name }}</h2>
+
+        {% if products %}
+            <h3>Products in {{ category.name }}</h3>
+            <ul class="list-group">
+                {% for product in products %}
+                    <li class="list-group-item">
+                        <strong>{{ product.name }}</strong> - Price: {{ product.price }}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No products found in this category.</p>
+        {% endif %}
+
+        <div class="mt-4">
+            <a href="{% url 'categorylist' %}" class="btn btn-primary">Back to Category List</a>
+        </div>
+    </div>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -13,7 +13,7 @@
     
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
-<link rel="icon" type="image/x-icon" href="{% static 'images/img1.png' %}">
+<link rel="icon" type="image/x-icon" href="{% static 'images/img1.jpg' %}">
 
 </head>
 <body>
@@ -22,7 +22,7 @@
     <div class="container">
         <!-- Shop Logo -->
         <a class="navbar-brand" href="#">
-            <img src="{% static 'images/logo.png' %}" alt="Shop Logo" style="width: 50px; height: 50px;">
+            <img src="{% static 'images/logo.jpg' %}" alt="Shop Logo" style="width: 50px; height: 50px;">
         </a>
         {% if user.is_authenticated %}
             <span class="navbar-text ml-2">{{ user.username }}</span>
