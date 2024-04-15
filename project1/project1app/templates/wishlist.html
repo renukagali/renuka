@@ -1,30 +1,36 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wishlist</title>
-    <link rel="stylesheet" href="{% static 'css/wishlist.css' %}">
-</head>
-<body>
-    <h1>Wishlist</h1>
-    <ul>
+{% extends 'basic.html' %}
+
+{% block title %}
+    Wishlist
+{% endblock %}
+
+{% block content %}
+    <h1 class="wishlist-heading">Wishlist</h1>
+    <div class="row">
         {% for item in wishlist_items %}
-            <li>
-                <div class="wishlist_item">
-                    <h4 class="card-title">Name: {{ item.products.name }}</h4>
-                    <p class="card-text">Price: {{ item.products.price }}</p>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    {% if item.product.image %}
+                        <div class="card-img-container">
+                            <img src="{{ item.product.image.url }}" alt="{{ item.product.name }} Image" class="card-img-top">
+                        </div>
+                    {% else %}
+                        <p>No image available</p>
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">Name: {{ item.product.name }}</h5>
+                        <p class="card-text">Price: ${{ item.product.price }}</p>
+                        <form method="post" action="{% url 'deletewishlist' item.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger">deletewishlist</button>
+                        </form>
+                    </div>
                 </div>
-                
-                <form method="post" action="{% url 'deletewishlist' item.id %}">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-danger">Delete from Wishlist</button>
-                </form>
-            </li>
+            </div>
         {% empty %}
-            <li>Your wishlist is empty</li>
+            <div class="col">
+                <p class="wishlist-empty">Your wishlist is empty.</p>
+            </div>
         {% endfor %}
-    </ul>
-</body>
-</html>
+    </div>
+{% endblock %}

@@ -3,11 +3,12 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.shortcuts import render, redirect
-from .forms import RegistrationForm, ProductForm, WishlistForm
-from .models import User, Product, Wishlist
+from .forms import RegistrationForm, ProductForm, WishlistForm, CategoryForm
+from .models import User, Product, Wishlist, Category
 from django.shortcuts import get_object_or_404
 from .forms import UserProfileForm, CustomPasswordChangeForm
 from django.contrib.auth import update_session_auth_hash  
+from django.db import IntegrityError
 
 
 def main_home(request):
@@ -103,24 +104,29 @@ def wishlist(request):
 
 
 
-#to add wishlist
+@login_required
 def addwishlist(request, product_id):
     product = get_object_or_404(Product, pk=product_id)
+    existing_wishlist_item = Wishlist.objects.filter(user=request.user, product=product).first()
+
+    if existing_wishlist_item:
+        messages.info(request, 'This item is already in your wishlist.')
+        return redirect('wishlist')
 
     if request.method == 'POST':
         form = WishlistForm(request.POST)
         if form.is_valid():
-            wishlist = form.save(commit=False)
-            wishlist.user = request.user
-            wishlist.save()  
-
-            wishlist.products.add(product)  
-
-            return redirect('wishlist')  
+            wishlist_item = form.save(commit=False)
+            wishlist_item.user = request.user
+            wishlist_item.product = product
+            wishlist_item.save()
+            messages.success(request, 'Item added to wishlist successfully.')
+            return redirect('wishlist')
     else:
         form = WishlistForm()
-
     return render(request, 'addwishlist.html', {'form': form, 'product': product})
+
+    
 
 #to delete a wishlist
 def deletewishlist(request, wishlist_id):
@@ -166,4 +172,38 @@ def logout_view(request):
     return redirect('main_home')
 
 
+def categorylist(request):
+    category = Category.objects.all()
+    return render(request, 'categorylist.html',{'category':category})
 
+#to add category
+def addcategory(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        if name:
+            Category.objects.create(name=name)
+            return redirect('categorylist')
+    return render(request, 'addcategory.html')
+
+# to update category
+def updatecategory(request, category_id):
+    obj = get_object_or_404(Category, pk=category_id)
+
+    if request.method == 'POST':
+        form = CategoryForm(request.POST, instance=obj)
+        if form.is_valid():
+            form.save()
+            return redirect('categorylist')
+        else:
+            form = CategoryForm(instance=obj)
+        return render(request, 'updatecategory.html',{'form': form})
+
+
+# to delete category
+def deletecategory(request, category_id):
+    category = get_object_or_404(Category, pk=category_id)
+    if request.method == 'POST':
+        category.delete()
+        return redirect('categorylist')
+    else:
+        return render(request, 'deletecategory.html',{'category':category})
