@@ -9,7 +9,7 @@
     <ul>
         {% for cart_item in cart_items %}
             <li>
-                <p>{{ cart_item.product.name }} </p>
+                <p>{{ cart_item.product.name }} - Quantity: {{ cart_item.quantity }}</p>
                 <form method="post" action="{% url 'deletefromcart' cart_item.id %}">
                     {% csrf_token %}
                     <button type="submit">Remove from Cart</button>

@@ -20,6 +20,8 @@
                     <div class="card-body">
                         <h5 class="card-title">Name: {{ item.product.name }}</h5>
                         <p class="card-text">Price: ${{ item.product.price }}</p>
+                        <p class="card-text">: Quantity: {{ item.product.quantity }}</p>
+
                         <form method="post" action="{% url 'deletewishlist' item.id %}">
                             {% csrf_token %}
                             <button type="submit" class="btn btn-danger">deletewishlist</button>
