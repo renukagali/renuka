@@ -3,8 +3,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.shortcuts import render, redirect
-from .forms import RegistrationForm, ProductForm, WishlistForm, CategoryForm
-from .models import User, Product, Wishlist, Category
+from .forms import RegistrationForm, ProductForm, WishlistForm, CategoryForm, CartForm
+from .models import User, Product, Wishlist, Category, Cart
 from django.shortcuts import get_object_or_404
 from .forms import UserProfileForm, CustomPasswordChangeForm
 from django.contrib.auth import update_session_auth_hash  
@@ -217,3 +217,45 @@ def categorydetails(request, category_id):
    items = Category.objects.all()
 
    return render (request,'categorydetails.html')
+
+
+def cart_detail(request):
+    cart = Cart(request)
+    return render(request, 'cart_detail.html', {'cart': cart})
+
+# to add cart
+def addcart(request, product_id):
+    product = get_object_or_404(Product, pk=product_id)
+    
+    cart_item, created = Cart.objects.get_or_create(user=request.user, product=product)
+    if not created:
+        cart_item.quantity += 1
+        cart_item.save()
+        messages.success(request, "Quantity updated successfully")
+    else:
+        messages.success(request, "Product added to your cart")
+
+    return redirect('view_cart')
+# to view cart
+def view_cart(request):
+    cart_items = Cart.objects.filter(user=request.user)
+    return render(request, 'cart/view_cart.html', {'cart_items': cart_items})
+
+
+#delete item from cart
+def deletefromcart(request, cart_item_id):
+    cart_item = get_object_or_404(Cart, pk=cart_item_id, user=request.user)
+    cart_item.delete()
+    messages.success(request, "Product removed from your cart")
+    return redirect('view_cart')
+
+
+
+
+# def lowtohigh(request):
+#     products = Product.objects.order_by('price')
+#     return render(request, 'sortbyprice.html', {'products': products})
+
+# def hightolow(request):
+#     products = Product.objects.order_by('price')
+#     return render(request, 'sortbyprice.html', {'products': products})

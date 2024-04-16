@@ -1,0 +1,23 @@
+{% extends 'basic.html' %}
+
+{% block title %}View Cart{% endblock %}
+
+{% block content %}
+<h2>Your Shopping Cart</h2>
+
+{% if cart_items %}
+    <ul>
+        {% for cart_item in cart_items %}
+            <li>
+                <p>{{ cart_item.product.name }} </p>
+                <form method="post" action="{% url 'deletefromcart' cart_item.id %}">
+                    {% csrf_token %}
+                    <button type="submit">Remove from Cart</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>Your cart is empty.</p>
+{% endif %}
+{% endblock %}

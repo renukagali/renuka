@@ -1,5 +1,5 @@
 from django import forms
-from .models import User, Product, Wishlist, Category
+from .models import User, Product, Wishlist, Category, Cart
 from django.contrib.auth.forms import PasswordChangeForm
 
 class RegistrationForm(forms.ModelForm):
@@ -36,8 +36,16 @@ class CustomPasswordChangeForm(PasswordChangeForm):
         self.fields['old_password'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Old Password'})
         self.fields['new_password1'].widget.attrs.update({'class': 'form-control', 'placeholder': 'New Password'})
         self.fields['new_password2'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Confirm New Password'})
+        
 
 class CategoryForm(forms.ModelForm):
     class Meta:
         model = Category 
         fields = ['name']
+
+
+class CartForm(forms.ModelForm):
+    class Meta:
+        model = Cart
+        fields = []
+

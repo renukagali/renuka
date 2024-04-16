@@ -1,0 +1,25 @@
+{% extends 'basic.html' %}
+
+{% block title %}
+    Product List -Shop
+{% endblock %}
+
+{% block content %}
+
+    <h1>Product List</h1>
+
+    <h1>Products Sorted by Price (Low to High)</h1>
+
+    {% if products %}
+        <ul>
+            {% for product in products %}
+                <li>
+                    <strong>{{ product.name }}</strong> - Category: {{ product.category }} - Price: ${{ product.price }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No products available.</p>
+    {% endif %}
+</body>
+</html>

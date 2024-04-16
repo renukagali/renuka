@@ -32,6 +32,13 @@
                             {% csrf_token %}
                             <button type="submit" class="btn btn-success">Add to Wishlist</button>
                         </form>
+
+                        <form method="post" action="{% url 'addcart' product.id %}">
+                            {% csrf_token %}
+                            <button type="submit">Add to Cart</button>
+                        </form>
+
+
                     </div>
                 </div>
             </div>

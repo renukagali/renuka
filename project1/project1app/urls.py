@@ -16,10 +16,16 @@ urlpatterns = [
     path('updateuserdetails/', views.updateuserdetails, name='updateuserdetails'),
     path('changepassword/', views.changepassword, name='changepassword'),
     path('logout_view/', views.logout_view, name='logout_view'),
-   path('categorylist/', views.categorylist, name='categorylist'),
+    path('categorylist/', views.categorylist, name='categorylist'),
     path('addcategory/', views.addcategory, name='addcategory'),
     path('updatecategory/<int:category_id>/', views.updatecategory, name='updatecategory'),
     path('deletecategory/<int:category_id>/', views.deletecategory, name='deletecategory'),
+
+    path('addcart/<int:product_id>/', views.addcart, name='addcart'),
+    path('cart/', views.view_cart, name='view_cart'),
+    path('deletefromcart/<int:cart_item_id>/', views.deletefromcart, name='deletefromcart'),
+
+
 
     
 ]
