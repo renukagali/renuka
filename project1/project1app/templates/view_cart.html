@@ -9,11 +9,18 @@
     <ul>
         {% for cart_item in cart_items %}
             <li>
-                <p>{{ cart_item.product.name }} - Quantity: {{ cart_item.quantity }}</p>
-                <form method="post" action="{% url 'deletefromcart' cart_item.id %}">
-                    {% csrf_token %}
-                    <button type="submit">Remove from Cart</button>
-                </form>
+                <div class="card-body">
+                    <h5 class="card-title">Name: {{ cart_item.product.name }}</h5>
+                    <p class="card-text">Price: ${{ cart_item.product.price }}</p>
+                    <!-- If you have a 'quantity' field in Cart model, display it -->
+                    <p class="card-text">Quantity: {{ cart_item.quantity }}</p>
+
+                    <!-- Form to remove item from cart -->
+                    <form method="post" action="{% url 'deletefromcart' cart_item.id %}">
+                        {% csrf_token %}
+                        <button type="submit">Remove from Cart</button>
+                    </form>
+                </div>
             </li>
         {% endfor %}
     </ul>

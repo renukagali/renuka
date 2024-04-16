@@ -108,7 +108,7 @@ def wishlist(request):
 
 
 
-@login_required
+# to add wish list
 def addwishlist(request, product_id):
     product = get_object_or_404(Product, pk=product_id)
     existing_wishlist_item = Wishlist.objects.filter(user=request.user, product=product).first()
@@ -236,10 +236,12 @@ def addcart(request, product_id):
         messages.success(request, "Product added to your cart")
 
     return redirect('view_cart')
+
+
 # to view cart
 def view_cart(request):
     cart_items = Cart.objects.filter(user=request.user)
-    return render(request, 'cart/view_cart.html', {'cart_items': cart_items})
+    return render(request, 'view_cart.html', {'cart_items': cart_items})
 
 
 #delete item from cart
